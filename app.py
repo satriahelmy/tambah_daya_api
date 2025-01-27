@@ -10,18 +10,37 @@ import pandas as pd
 
 model = joblib.load('model.pkl')
 scaler = joblib.load('scaler.pkl')
-encoder = joblib.load('encoder.pkl')
 
 # Membuat aplikasi FastAPI
 app = FastAPI()
 
 class InputData(BaseModel):
-    pemkwh: float
-    rpptl: float
-    jam_nyala: float
-    daya: float
-    keterangan_tarif: str
-    kategori_layanan: str
+    pemkwh1: float
+    pemkwh2: float
+    pemkwh3: float
+    pemkwh4: float
+    pemkwh5: float
+    pemkwh6: float
+    pemkwh7: float
+    pemkwh8: float
+    pemkwh9: float
+    pemkwh10: float
+    pemkwh11: float
+    pemkwh12: float
+    pemkwh13: float
+    pemkwh14: float
+    pemkwh15: float
+    pemkwh16: float
+    pemkwh17: float
+    pemkwh18: float
+    pemkwh19: float
+    pemkwh20: float
+    pemkwh21: float
+    pemkwh22: float
+    pemkwh23: float
+    pemkwh24: float
+
+
 
 
 @app.get("/")
@@ -31,41 +50,64 @@ def read_root():
 @app.post("/predict")
 def predict(input_data: InputData):
     # Mengambil data input dan melakukan prediksi
-    pemkwh = input_data.pemkwh
-    rpptl = input_data.rpptl
-    jam_nyala = input_data.jam_nyala
-    daya = input_data.daya
-    keterangan_tarif = input_data.keterangan_tarif
-    kategori_layanan = input_data.kategori_layanan
+    pemkwh1 = input_data.pemkwh1
+    pemkwh2 = input_data.pemkwh2
+    pemkwh3 = input_data.pemkwh3
+    pemkwh4 = input_data.pemkwh4
+    pemkwh5 = input_data.pemkwh5
+    pemkwh6 = input_data.pemkwh6
+    pemkwh7 = input_data.pemkwh7
+    pemkwh8 = input_data.pemkwh8
+    pemkwh9 = input_data.pemkwh9
+    pemkwh10 = input_data.pemkwh10
+    pemkwh11 = input_data.pemkwh11
+    pemkwh12 = input_data.pemkwh12
+    pemkwh13 = input_data.pemkwh13
+    pemkwh14 = input_data.pemkwh14
+    pemkwh15 = input_data.pemkwh15
+    pemkwh16 = input_data.pemkwh16
+    pemkwh17 = input_data.pemkwh17
+    pemkwh18 = input_data.pemkwh18
+    pemkwh19 = input_data.pemkwh19
+    pemkwh20 = input_data.pemkwh20
+    pemkwh21 = input_data.pemkwh21
+    pemkwh22 = input_data.pemkwh22
+    pemkwh23 = input_data.pemkwh23
+    pemkwh24 = input_data.pemkwh24
+
 
     input_num = {
-        "pemkwh": pemkwh,
-        "jam_nyala": jam_nyala,
-        "rpptl": rpptl,
-        "daya": daya
+        "pemkwh1": pemkwh1,
+        "pemkwh2": pemkwh2,
+        "pemkwh3": pemkwh3,
+        "pemkwh4": pemkwh4,
+        "pemkwh5": pemkwh5,
+        "pemkwh6": pemkwh6,
+        "pemkwh7": pemkwh7,
+        "pemkwh8": pemkwh8,
+        "pemkwh9": pemkwh9,
+        "pemkwh10": pemkwh10,
+        "pemkwh11": pemkwh11,
+        "pemkwh12": pemkwh12,
+        "pemkwh13": pemkwh13,
+        "pemkwh14": pemkwh14,
+        "pemkwh15": pemkwh15,
+        "pemkwh16": pemkwh16,
+        "pemkwh17": pemkwh17,
+        "pemkwh18": pemkwh18,
+        "pemkwh19": pemkwh19,
+        "pemkwh20": pemkwh20,
+        "pemkwh21": pemkwh21,
+        "pemkwh22": pemkwh22,
+        "pemkwh23": pemkwh23,
+        "pemkwh24": pemkwh24,
     }
 
     df_numeric = pd.DataFrame([input_num])
     scaled_array = scaler.transform(df_numeric)
     df_scaled = pd.DataFrame(scaled_array, columns=df_numeric.columns)
 
-    input_kat = {
-        "keterangan_tarif": keterangan_tarif,
-        'kategori_layanan': kategori_layanan
-    }
-
-    df_kat = pd.DataFrame([input_kat])
-    encoded_array = encoder.transform(df_kat).toarray()
-
-    df_encoded = pd.DataFrame(
-        encoded_array,
-        columns=encoder.get_feature_names_out(df_kat.columns)
-    )
-
-    df_encoded.columns = df_encoded.columns.str.replace("keterangan_", "", regex=False)
-    df_encoded.columns = df_encoded.columns.str.replace("kategori_", "", regex=False)
-
-    df_final = pd.concat([df_scaled, df_encoded], axis=1)
+    df_final = df_scaled
 
     # Lakukan prediksi
     prediction = model.predict(df_final)
@@ -84,4 +126,4 @@ def predict(input_data: InputData):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8008)
